@@ -19,13 +19,9 @@ export class AuthService {
     return null;
   }
 
-  async login(username: string, password: string) {
-    const valid = await this.validateUser(username, password);
-    console.log(username, password);
-    if (!valid) {
-      throw new UnauthorizedException();
-    }
-    const payload = { username, password };
+  async login(user: any) {
+    const payload = { username: user.username, sub: user.userId };
+    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),
     };
