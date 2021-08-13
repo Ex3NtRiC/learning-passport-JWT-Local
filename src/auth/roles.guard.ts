@@ -1,6 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { VariablesInAllowedPositionRule } from 'graphql';
 import { ROLES_KEY } from './roles.decorator';
 import { Role } from './roles.enum';
 

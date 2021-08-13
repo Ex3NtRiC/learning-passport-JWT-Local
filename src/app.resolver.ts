@@ -1,5 +1,13 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
+import { of } from 'rxjs';
 import { AppService } from './app.service';
 import { AppType } from './app.type';
 import { AuthService } from './auth/auth.service';
@@ -7,6 +15,7 @@ import { AuthType } from './auth/auth.type';
 import { CurrentUser } from './auth/current-user.decorator';
 import { GqlJwtAuthGuard } from './auth/graphql-jwt-auth.guard';
 import { GqlRolesGuard } from './auth/graphql-roles.guard';
+import { RoleType } from './auth/role.type';
 import { Roles } from './auth/roles.decorator';
 import { Role } from './auth/roles.enum';
 import { UserType } from './users/user.type';
@@ -20,7 +29,7 @@ export class AppResolver {
     private readonly authService: AuthService,
   ) {}
 
-  @Roles(Role.User)
+  @Roles(Role.Admin)
   @UseGuards(GqlJwtAuthGuard, GqlRolesGuard)
   @Query((returns) => AppType)
   getHelloGQL() {
@@ -45,7 +54,9 @@ export class AppResolver {
 
   @Query((returns) => UserType)
   @UseGuards(GqlJwtAuthGuard)
-  whoAmI(@CurrentUser() user: User) {
-    return this.usersService.findOne(user.username);
+  async whoAmI(@CurrentUser() user: User) {
+    return user;
+    // const u = await this.usersService.findOne(user.username);
+    // return u;
   }
 }

@@ -35,7 +35,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('role')
   getHelloRoles(@Request() req) {

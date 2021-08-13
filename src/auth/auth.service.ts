@@ -37,7 +37,11 @@ export class AuthService {
     if (!result) {
       throw new UnauthorizedException();
     }
-    const payload = { username: result.username, sub: result.userId };
+    const payload = {
+      username: result.username,
+      sub: result.userId,
+      roles: result.roles,
+    };
     console.log(payload);
     return {
       access_token: this.jwtService.sign(payload),

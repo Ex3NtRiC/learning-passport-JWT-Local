@@ -11,6 +11,6 @@ export class UserType {
 
   password: string;
 
-  @Field((type) => [RoleType])
-  roles: RoleType[];
+  @Field((type) => [String])
+  roles: string[];
 }
