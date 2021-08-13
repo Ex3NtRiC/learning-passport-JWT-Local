@@ -1,0 +1,48 @@
+import { UseGuards, Request, Body } from '@nestjs/common';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { AppService } from './app.service';
+import { AppType } from './app.type';
+import { AuthService } from './auth/auth.service';
+import { AuthType } from './auth/auth.type';
+import { CurrentUser } from './auth/current-user.decorator';
+import { GqlLocalAuthGuard } from './auth/graphql--local-auth.guard';
+import { GqlJwtAuthGuard } from './auth/graphql-jwt-auth.guard';
+import { LocalAuthGuard } from './auth/local-auth.guard';
+import { UserType } from './users/user.type';
+import { User, UsersService } from './users/users.service';
+
+@Resolver((of) => AppType)
+export class AppResolver {
+  constructor(
+    private readonly appService: AppService,
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
+
+  @Query((returns) => AppType)
+  getHelloGQL() {
+    return this.appService.getHelloGQL();
+  }
+
+  @Query((returns) => AppType)
+  postHelloGQL(@Args('name') name: string) {
+    return this.appService.postHelloGQL(name);
+  }
+
+  @Mutation((returns) => AuthType)
+  async loginGQL(
+    @Args('username') username: string,
+    @Args('password') password: string,
+  ) {
+    console.log('req.user:');
+    const access_token = await this.authService.loginGQL(username, password);
+    console.log(access_token);
+    return access_token;
+  }
+
+  @Query((returns) => UserType)
+  @UseGuards(GqlJwtAuthGuard)
+  whoAmI(@CurrentUser() user: User) {
+    return this.usersService.findOne(user.username);
+  }
+}
