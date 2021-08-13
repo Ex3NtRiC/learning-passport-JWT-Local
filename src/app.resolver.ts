@@ -5,9 +5,7 @@ import { AppType } from './app.type';
 import { AuthService } from './auth/auth.service';
 import { AuthType } from './auth/auth.type';
 import { CurrentUser } from './auth/current-user.decorator';
-import { GqlLocalAuthGuard } from './auth/graphql--local-auth.guard';
 import { GqlJwtAuthGuard } from './auth/graphql-jwt-auth.guard';
-import { LocalAuthGuard } from './auth/local-auth.guard';
 import { UserType } from './users/user.type';
 import { User, UsersService } from './users/users.service';
 
