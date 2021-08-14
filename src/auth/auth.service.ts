@@ -32,8 +32,8 @@ export class AuthService {
     };
   }
 
-  async loginGQL(username: string, password: string): Promise<AuthType> {
-    const result = await this.validateUser(username, password);
+  async loginGQL(username: string): Promise<AuthType> {
+    const result = await this.usersService.findOne(username);
     if (!result) {
       throw new UnauthorizedException();
     }

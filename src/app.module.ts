@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      context: ({ req, res }) => ({ req, res }),
     }),
   ],
   controllers: [AppController],

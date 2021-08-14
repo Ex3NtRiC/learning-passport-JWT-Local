@@ -13,8 +13,11 @@ import { AppType } from './app.type';
 import { AuthService } from './auth/auth.service';
 import { AuthType } from './auth/auth.type';
 import { CurrentUser } from './auth/current-user.decorator';
+import { GetRequest } from './auth/get-request.decorator';
 import { GqlJwtAuthGuard } from './auth/graphql-jwt-auth.guard';
+import { GqlLocalAuthGuard } from './auth/graphql-local-auth.guard';
 import { GqlRolesGuard } from './auth/graphql-roles.guard';
+import { LocalAuthGuard } from './auth/local-auth.guard';
 import { RoleType } from './auth/role.type';
 import { Roles } from './auth/roles.decorator';
 import { Role } from './auth/roles.enum';
@@ -42,12 +45,13 @@ export class AppResolver {
   }
 
   @Mutation((returns) => AuthType)
+  @UseGuards(GqlLocalAuthGuard)
   async loginGQL(
     @Args('username') username: string,
     @Args('password') password: string,
   ) {
-    console.log('req.user:');
-    const access_token = await this.authService.loginGQL(username, password);
+    console.log('it worked');
+    const access_token = await this.authService.loginGQL(username);
     console.log(access_token);
     return access_token;
   }

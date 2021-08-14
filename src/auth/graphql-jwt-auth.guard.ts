@@ -7,6 +7,7 @@ export class GqlJwtAuthGuard extends AuthGuard('jwt') {
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     console.log('JWT ctx.getContext().req');
+    console.log(ctx.getContext().req.body);
     return ctx.getContext().req;
   }
 }
